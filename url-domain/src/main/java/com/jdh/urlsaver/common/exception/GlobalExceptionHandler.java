@@ -1,4 +1,4 @@
-package com.jdh.urlsaver.common;
+package com.jdh.urlsaver.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -20,12 +20,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(FileNotFoundException.class)
-    public ResponseEntity handleFileException() {
+    public ResponseEntity handleFileException(FileNotFoundException e) {
+        log.error(e.getMessage());
         return new ResponseEntity("FileException", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleException() {
+    public ResponseEntity handleException(Exception e) {
+        log.error(e.getMessage());
         return new ResponseEntity("Exception", HttpStatus.BAD_REQUEST);
     }
 

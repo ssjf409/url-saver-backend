@@ -1,5 +1,6 @@
 package com.jdh.urlsaver;
 
+import com.jdh.urlsaver.configuration.properties.AppProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -8,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 @EnableConfigurationProperties({
 //        CorsProperties.class,
-//        AppProperties.class
+        AppProperties.class
 })
 @SpringBootApplication(
         scanBasePackageClasses = { BasePackage.class }

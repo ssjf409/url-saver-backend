@@ -21,16 +21,16 @@ import javax.persistence.Table;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE contract_type SET deleted = true WHERE contract_type_id = ?")
+@SQLDelete(sql = "UPDATE contract_revision SET deleted = true WHERE contract_revision_id = ?")
 @Where(clause = "deleted = false")
-@Entity
 @Table
-public class ContractType extends BaseEntity {
+@Entity(name = "contract_revision")
+public class ContractRevisionEntity extends BaseEntity {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long contractTypeId;
+    private Long contractRevisionId;
 
     // TODO: 2022/06/14 have to add more code
 }

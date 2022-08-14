@@ -24,7 +24,7 @@ spring:
     show-sql: true
     hibernate:
       format_sql: false
-      ddl-auto: create
+      ddl-auto: create-drop
   main:
     allow-bean-definition-overriding: true
   #  security:
@@ -103,13 +103,14 @@ logging:
 #jwt:
 #  secret: '8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds'
 ## ?? ?? secret Key ? RedirectUri ??
-#app:
-#  auth:
-#    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
-#    tokenExpiry: 1800000
-##    tokenExpiry: 5000
-#    refreshTokenExpiry: 604800000
-#  oauth2:
-#    authorizedRedirectUris:
-#      - http://localhost:3000/oauth/redirect
+app:
+  auth:
+    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenExpiry: 1800000
+    #    tokenExpiry: 5000
+    refreshTokenExpiry: 604800000
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth/redirect
+
 

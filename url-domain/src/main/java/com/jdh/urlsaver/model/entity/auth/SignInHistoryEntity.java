@@ -15,6 +15,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import static com.jdh.urlsaver.utils.LengthCondition.*;
 
 @Builder
 @Setter
@@ -23,14 +26,23 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE sign_in_history SET deleted = true WHERE sign_in_history_id = ?")
 @Where(clause = "deleted = false")
-@Entity
 @Table
-public class SignInHistory extends BaseEntity {
+@Entity(name = "sign_in_history")
+public class SignInHistoryEntity extends BaseEntity {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long signInHistoryId;
+
+    @Size(max = LOGIN_ID_LEN)
+    @Column
+    private String loginId;
+
+    @Size(max = DEVICE_ID_LEN)
+    @Column
+    private String deviceId;
+
 
     // TODO: 2022/06/14 have to add more code
 }

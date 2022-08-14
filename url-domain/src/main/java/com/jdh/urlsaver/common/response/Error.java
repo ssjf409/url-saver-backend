@@ -1,4 +1,4 @@
-package com.jdh.urlsaver.api.response;
+package com.jdh.urlsaver.common.response;
 
 
 import lombok.Data;

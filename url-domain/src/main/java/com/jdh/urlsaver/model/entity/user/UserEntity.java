@@ -1,4 +1,4 @@
-package com.jdh.urlsaver.model.entity.account;
+package com.jdh.urlsaver.model.entity.user;
 
 import com.jdh.urlsaver.model.entity.audit.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-import static com.jdh.urlsaver.utils.LengthConstant.*;
+import static com.jdh.urlsaver.utils.LengthCondition.*;
 
 @Builder
 @Setter
@@ -29,58 +29,57 @@ import static com.jdh.urlsaver.utils.LengthConstant.*;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE user SET deleted = true WHERE user_id = ?")
 @Where(clause = "deleted = false")
-@Entity
 @Table
-public class User extends BaseEntity {
+@Entity(name = "user")
+public final class UserEntity extends BaseEntity {
 
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long userId;
 
-    @Size(max = EMAIL)
+    @Size(max = EMAIL_LEN)
     @Column(unique = true)
     private String loginId;
 
-    @Size(max = PASSWORD)
+    @Size(max = PASSWORD_LEN)
     @Column
     private String hashedPassword;
 
-    @Size(max = EMAIL)
+    @Size(max = EMAIL_LEN)
     @Column
     private String email;
 
-    @Size(max = NAME)
+    @Size(max = NAME_LEN)
     @Column
-    private String username;
+    private String familyName;
+
+    @Size(max = NAME_LEN)
+    @Column
+    private String givenName;
 
     @Column(columnDefinition = "TINYINT(1)", length = 1)
-//    @Column(length = 1)
-    private boolean emailVerifiedYn;
+    private boolean emailVerified;
 
-    @Size(max = IMAGE_URL)
+    @Size(max = IMAGE_URL_LEN)
     @Column
     private String profileImageUrl;
 
-    //    @Size(max = PROVIDER_TYPE)
     @Enumerated(EnumType.STRING)
-    @Column(length = PROVIDER_TYPE)
+    @Column(length = PROVIDER_TYPE_LEN)
     private ProviderType providerType;
 
-    //    @Size(max = ROLE)
     @Enumerated(EnumType.STRING)
-    @Column(length = ROLE)
+    @Column(length = ROLE_LEN)
     private RoleType roleType;
 
     @Column(columnDefinition = "TINYINT(1)", length = 1)
-//    @Column(length = 1)
     private boolean dormant;
 
     @Column
     private LocalDateTime dormantAt;
 
     @Column(columnDefinition = "TINYINT(1)", length = 1)
-//    @Column(length = 1)
     private boolean withdrawn;
 
     @Column

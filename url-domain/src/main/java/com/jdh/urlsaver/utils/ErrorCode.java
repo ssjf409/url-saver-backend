@@ -1,11 +1,12 @@
 package com.jdh.urlsaver.utils;
 
 public enum ErrorCode {
-    INVALID_TOKEN("41001", "invalid_token"),
+    INVALID_TOKEN("40101", "invalid_token"),
+    UNAUTHORIZED("40101", "unauthorized"),
     ;
 
-    private String code;
-    private String messageCode;
+    private final String code;
+    private final String messageCode;
 
     ErrorCode(String code, String messageCode) {
         this.code = code;

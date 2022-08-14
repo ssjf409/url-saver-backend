@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-import static com.jdh.urlsaver.utils.LengthConstant.*;
+import static com.jdh.urlsaver.utils.LengthCondition.*;
 
 @Getter
 @MappedSuperclass
@@ -27,12 +27,12 @@ public abstract class AuditEntity {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    @Size(max = NAME)
+    @Size(max = NAME_LEN)
     @CreatedBy
     @Column(updatable = false)
     private String createdBy = "SYSTEM";
 
-    @Size(max = NAME)
+    @Size(max = NAME_LEN)
     @LastModifiedBy
     private String modifiedBy = "SYSTEM";
 

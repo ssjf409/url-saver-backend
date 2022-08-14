@@ -1,4 +1,4 @@
-package com.jdh.urlsaver.model.entity.account;
+package com.jdh.urlsaver.model.entity.contract;
 
 import com.jdh.urlsaver.model.entity.audit.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -15,38 +15,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
-
-import static com.jdh.urlsaver.utils.LengthConstant.*;
 
 @Builder
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE account SET deleted = true WHERE account_id = ?")
+@SQLDelete(sql = "UPDATE contract_type SET deleted = true WHERE contract_type_id = ?")
 @Where(clause = "deleted = false")
-@Entity
 @Table
-public class Account extends BaseEntity {
+@Entity(name = "contract_type")
+public class ContractTypeEntity extends BaseEntity {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long accountId;
+    private Long contractTypeId;
 
-    @Column
-    private Long userId;
-
-    @Size(max = EMAIL)
-    @Column(unique = true)
-    private String loginId;
-
-    @Size(max = EMAIL)
-    @Column
-    private String email;
-
-    @Size(max = PASSWORD)
-    @Column
-    private String hashedPassword;
+    // TODO: 2022/06/14 have to add more code
 }

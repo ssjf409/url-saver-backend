@@ -23,9 +23,9 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE contract_revision SET deleted = true WHERE contract_revision_id = ?")
 @Where(clause = "deleted = false")
-@Entity
 @Table
-public class ContractResult extends BaseEntity {
+@Entity(name = "contract_result")
+public class ContractResultEntity extends BaseEntity {
 
     @Id
     @Column

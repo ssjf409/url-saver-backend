@@ -1,4 +1,4 @@
-package com.jdh.urlsaver.model.entity.account;
+package com.jdh.urlsaver.model.entity.user;
 
 import lombok.Getter;
 
