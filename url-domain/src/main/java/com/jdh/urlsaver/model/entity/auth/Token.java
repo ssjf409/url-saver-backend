@@ -33,6 +33,11 @@ public class Token {
 //        this.token = createAuthToken(id, role, expiry);
 //    }
 
+    public Token(String secret, String value) {
+        this.secret = secret;
+        this.value = value;
+    }
+
     public Token(String secret, String type, String header,
                  String headerValue, Date expiredTime) {
         this.secret = secret;

@@ -52,4 +52,17 @@ public final class AuthApplication {
         // after success validation
         authService.successEmailVerification(userId);
     }
+
+    public void authenticate(String accessToken) {
+        // decode
+        String userId = tokenApplication.validateAccessToken(accessToken);
+
+        // find user
+
+        //
+    }
+
+    public void authenticateWithRefreshToken(String refreshToken) {
+
+    }
 }

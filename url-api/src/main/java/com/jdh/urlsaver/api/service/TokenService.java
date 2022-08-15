@@ -3,9 +3,11 @@ package com.jdh.urlsaver.api.service;
 import com.jdh.urlsaver.api.repository.TokenRepository;
 import com.jdh.urlsaver.api.service.dto.AuthResult;
 import com.jdh.urlsaver.common.converter.TokenConverter;
+import com.jdh.urlsaver.common.exception.TokenValidFailedException;
 import com.jdh.urlsaver.configuration.properties.AppProperties;
 import com.jdh.urlsaver.model.entity.auth.Token;
 import com.jdh.urlsaver.model.entity.auth.TokenEntity;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ import java.util.Optional;
 @Service
 public class TokenService {
 
+    private static final String ACCESS_TOKEN_TYPE = "access-token";
+    private static final String REFRESH_TOKEN_TYPE = "refresh-token";
+    private static final String HEADER = "userId";
     private final TokenRepository tokenRepository;
     private final AppProperties appProperties;
     private final String secret;
@@ -34,13 +39,12 @@ public class TokenService {
 //        return new AuthToken(id, expiry, key);
 //    }
 
-    public AuthResult createAuthToken(String accessTokenType, String refreshTokenType, String header,
-                                      String headerValue) {
+    public AuthResult createAuthToken(String headerValue) {
         Date now = new Date();
         Date accessibleTime = new Date(now.getTime() + appProperties.getAuth().getTokenExpiry());
         Date refreshableTime = new Date(now.getTime() + appProperties.getAuth().getRefreshTokenExpiry());
-        Token accessToken = new Token(this.secret, accessTokenType, header, headerValue, accessibleTime);
-        Token refreshToken = new Token(this.secret, refreshTokenType, header, headerValue, refreshableTime);
+        Token accessToken = new Token(this.secret, ACCESS_TOKEN_TYPE, HEADER, headerValue, accessibleTime);
+        Token refreshToken = new Token(this.secret, REFRESH_TOKEN_TYPE, HEADER, headerValue, refreshableTime);
 
         return initAuthToken(accessToken, refreshToken);
     }
@@ -65,6 +69,16 @@ public class TokenService {
         TokenEntity newToken = token.toEntity();
         newToken.setTokenId(tokenEntity.getTokenId());
         return TokenConverter.convert(tokenRepository.save(newToken));
+    }
+
+    public String validate(String tokenString) {
+        Token token = new Token(this.secret, tokenString);
+        Claims tokenClaims = token.getTokenClaims();
+        if (tokenClaims == null) {
+            throw new TokenValidFailedException(String.format("failed to validate token, token: %s", tokenString));
+        }
+
+        return tokenClaims.get("userId", String.class);
     }
 
 //    @Transactional
