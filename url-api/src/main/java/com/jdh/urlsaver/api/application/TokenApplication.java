@@ -1,6 +1,6 @@
 package com.jdh.urlsaver.api.application;
 
-import com.jdh.urlsaver.api.controller.vo.AuthVo;
+import com.jdh.urlsaver.api.application.vo.AuthVo;
 import com.jdh.urlsaver.api.service.TokenService;
 import com.jdh.urlsaver.api.service.dto.AuthResult;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 @Component
 public final class TokenApplication {
-    
+
     private static final String ACCESS_TOKEN_TYPE = "access-token";
     private static final String REFRESH_TOKEN_TYPE = "refresh-token";
     private static final String HEADER = "userId";

@@ -15,4 +15,5 @@ public interface LengthCondition {
     int ROLE_LEN = 20;
     int TOKEN_LEN = 500;
     int TOKEN_TYPE_LEN = 20;
+    int RANDOM_STRING_LEN = 200;
 }

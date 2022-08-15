@@ -19,16 +19,31 @@ public class GlobalExceptionHandler {
         this.messageSource = messageSource;
     }
 
+
+    @ExceptionHandler(EmailSendException.class)
+    protected ResponseEntity<String> handleEmailSendException(EmailSendException e) {
+        // TODO: 2022/08/15 have to fix
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>("EmailSendException", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    protected ResponseEntity<String> handleUnauthorizedException(UnauthorizedException e) {
+        // TODO: 2022/08/15 have to fix
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>("UnauthorizedException", HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(FileNotFoundException.class)
-    public ResponseEntity handleFileException(FileNotFoundException e) {
-        log.error(e.getMessage());
-        return new ResponseEntity("FileException", HttpStatus.BAD_REQUEST);
+    protected ResponseEntity<String> handleFileException(FileNotFoundException e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>("FileException", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleException(Exception e) {
-        log.error(e.getMessage());
-        return new ResponseEntity("Exception", HttpStatus.BAD_REQUEST);
+    protected ResponseEntity<String> handleException(Exception e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>("Exception", HttpStatus.BAD_REQUEST);
     }
 
 

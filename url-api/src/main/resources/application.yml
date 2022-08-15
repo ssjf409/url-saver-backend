@@ -37,6 +37,18 @@ spring:
   #            - email
   #            - profile
   #delete sql.init.mode
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ssjf409@gmail.com
+    password: klgohexsmkzaqdiy
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 5000
+          auth: true
+          starttls:
+            enable: true
   sql:
     init:
       mode: always

@@ -1,4 +1,4 @@
-package com.jdh.urlsaver.api.controller.vo;
+package com.jdh.urlsaver.api.application.vo;
 
 import lombok.Builder;
 import lombok.Getter;

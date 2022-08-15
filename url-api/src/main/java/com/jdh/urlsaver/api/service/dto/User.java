@@ -26,7 +26,7 @@ public class User {
 
     private String givenName;
 
-    private boolean emailVerifiedYn;
+    private boolean emailVerified;
 
     private String profileImageUrl;
 
@@ -49,7 +49,7 @@ public class User {
                    .email(userEntity.getEmail())
                    .familyName(userEntity.getFamilyName())
                    .givenName(userEntity.getGivenName())
-                   .emailVerifiedYn(userEntity.isEmailVerified())
+                   .emailVerified(userEntity.isEmailVerified())
                    .profileImageUrl(userEntity.getProfileImageUrl())
                    .providerType(userEntity.getProviderType())
                    .roleType(userEntity.getRoleType())
