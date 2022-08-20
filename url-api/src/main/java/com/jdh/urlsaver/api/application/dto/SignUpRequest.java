@@ -15,7 +15,7 @@ import javax.validation.constraints.Pattern;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpRequestDto {
+public class SignUpRequest {
 
     // TODO: 2022/08/14 유효성 검증 다시 확인해보고 내용 영어로 변경해야함.
 

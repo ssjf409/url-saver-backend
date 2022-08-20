@@ -10,8 +10,7 @@ public interface LengthCondition {
     int IMAGE_URL_LEN = 512;
     int PROVIDER_TYPE_LEN = 20;
     int KEY_LEN = 100;
-    int ATTRIBUTE_LEN = 50;
-    int ATTRIBUTE_VALUE_LEN = 50;
+    int TOKEN_SUBJECT_LEN = 50;
     int ROLE_LEN = 20;
     int TOKEN_LEN = 500;
     int TOKEN_TYPE_LEN = 20;

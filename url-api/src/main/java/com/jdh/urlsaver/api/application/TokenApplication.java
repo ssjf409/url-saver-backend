@@ -1,9 +1,12 @@
 package com.jdh.urlsaver.api.application;
 
-import com.jdh.urlsaver.api.application.vo.AuthVo;
 import com.jdh.urlsaver.api.service.TokenService;
 import com.jdh.urlsaver.api.service.dto.AuthResult;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -12,20 +15,30 @@ import javax.validation.constraints.NotNull;
 @Component
 public final class TokenApplication {
 
-    //    private static final String ACCESS_TOKEN_TYPE = "access-token";
-//    private static final String REFRESH_TOKEN_TYPE = "refresh-token";
-//    private static final String HEADER = "userId";
     private final TokenService tokenService;
 
-    public AuthVo createToken(@NotNull String userId) {
-        AuthResult authResult = tokenService.createAuthToken(userId);
-        return AuthVo.builder()
-                     .accessToken(authResult.getAccessToken().getValue())
-                     .refreshToken(authResult.getRefreshToken().getValue())
-                     .build();
+    public AuthResult createToken(@NotNull String userId, String role) {
+        return tokenService.createAuthToken(userId, role);
     }
 
-    public String validateAccessToken(@NotNull String accessToken) {
-        return tokenService.validate(accessToken);
+    public boolean validate(String tokenStr) {
+        return tokenService.validate(tokenStr);
     }
+
+    public Authentication getAuthentication(String tokenStr) {
+        return tokenService.getAuthentication(tokenStr);
+    }
+
+    public Tuple2<Authentication, AuthResult> refreshAuthentication(String tokenStr) {
+        Authentication authentication = tokenService.getAuthentication(tokenStr);
+        User user = (User) authentication.getPrincipal();
+        AuthResult authToken =
+                tokenService.createAuthToken(user.getUsername(),
+                                             user.getAuthorities().stream().findFirst().get().getAuthority());
+        return Tuple.of(authentication, authToken);
+    }
+
+//    public String validateAccessToken(@NotNull String accessToken) {
+//        return tokenService.validate(accessToken);
+//    }
 }

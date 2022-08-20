@@ -1,5 +1,8 @@
 package com.jdh.urlsaver.configuration.security;
 
+import com.jdh.urlsaver.api.application.TokenApplication;
+import com.jdh.urlsaver.common.filter.TokenAuthenticationFilter;
+import com.jdh.urlsaver.configuration.properties.AppProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,21 +12,23 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final String[] ALLOWED_PATH = {
+    private static final String[] ALLOWED_PATH = {
             "/hello",
             "/favicon**",
             "**.js",
             "**.html",
             "**.css",
-            "/api/**/auth/login"
+            "/api/**/auth/sign-in",
+            "/api/**/auth/sign-up",
     };
-    private final String[] ALLOWED_PATH_ON_DEV = {
-            "/hello",
+    private static final String[] ALLOWED_PATH_ON_DEV = {
+//            "/hello",
             "/favicon**",
             "**.js",
             "**.html",
@@ -42,6 +47,8 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/swagger-ui/**"
     };
+    private final TokenApplication tokenApplication;
+    private final AppProperties appProperties;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -57,6 +64,7 @@ public class SecurityConfig {
 //                .configurationSource(corsConfigurationSource())
                 .and()
                 .headers().frameOptions().disable()
+
                 .and()
                 .authorizeRequests()
 //                .antMatchers(ALLOWED_PATH).permitAll()
@@ -64,10 +72,13 @@ public class SecurityConfig {
                 .permitAll()
 //                .antMatchers("/v1/**").authenticated()
                 .anyRequest().authenticated()
+
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
+
     }
 
 //    @Bean
@@ -83,6 +94,14 @@ public class SecurityConfig {
 //        source.registerCorsConfiguration("/**", configuration);
 //        return source;
 //    }
+
+    /*
+     * 토큰 필터 설정
+     * */
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter(tokenApplication, appProperties);
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

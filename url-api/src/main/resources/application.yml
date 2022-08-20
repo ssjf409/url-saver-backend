@@ -119,7 +119,9 @@ app:
   auth:
     tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
     tokenExpiry: 1800000
+    tokenExpirySec: 30000
     refreshTokenExpiry: 604800000
+    refreshTokenExpirySec: 10080000
   oauth2:
     authorizedRedirectUris:
       - http://localhost:3000/oauth/redirect

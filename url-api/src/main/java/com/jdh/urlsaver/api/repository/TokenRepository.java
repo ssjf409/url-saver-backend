@@ -9,5 +9,7 @@ public interface TokenRepository extends JpaRepository<TokenEntity, Long> {
 //
 //    TokenEntity findByDeviceId(String deviceId);
 
-    TokenEntity findByTypeAndHeaderAndHeaderValue(String type, String header, String headerValue);
+
+    TokenEntity findBySubjectAndType(String subject, String type);
+
 }

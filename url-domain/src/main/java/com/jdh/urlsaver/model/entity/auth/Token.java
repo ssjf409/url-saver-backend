@@ -1,117 +1,73 @@
 package com.jdh.urlsaver.model.entity.auth;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.security.Key;
 import java.util.Date;
 
 @Slf4j
 @Getter
 @Setter
-//@Builder
-//@AllArgsConstructor
-//@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Token {
-    private String secret;
+
+    private static final String AUTHORITIES_KEY = "role";
+    private static final String TOKEN_TYPE = "type";
     private Long tokenId;
-    private String type; // service name
-    private String header; // X-ESt
-    private String headerValue;
-    private String value;
+    private String subject;
+    private String type;
+    private String role;
+    private String token;
     private Date expiredTime;
 
-//    public AuthToken(String id, String role, Date expiry, Key key) {
-//        this.key = key;
-//        this.token = createAuthToken(id, role, expiry);
-//    }
-
-    public Token(String secret, String value) {
-        this.secret = secret;
-        this.value = value;
+    public static Token of(TokenEntity entity) {
+        return Token.builder()
+                    .tokenId(entity.getTokenId())
+                    .subject(entity.getSubject())
+                    .type(entity.getType())
+                    .role(entity.getRole())
+                    .token(entity.getToken())
+                    .expiredTime(entity.getExpiredTime())
+                    .build();
     }
 
-    public Token(String secret, String type, String header,
-                 String headerValue, Date expiredTime) {
-        this.secret = secret;
-        this.type = type;
-        this.header = header;
-        this.headerValue = headerValue;
-        this.expiredTime = expiredTime;
-        this.value = createAuthToken(secret, type, header, headerValue, expiredTime);
+    public static Token create(String subject, String role, String type, Key key, Date now, Date expiredTime) {
+        return Token.builder()
+                    .subject(subject)
+                    .type(type)
+                    .role(role)
+                    .token(createJwtToken(subject, role, type, key, now, expiredTime))
+                    .expiredTime(expiredTime)
+                    .build();
     }
 
-//    private String createAuthToken(String id, Date expiredTime) {
-//        return Jwts.builder()
-//                   .setSubject(id)
-//                   .signWith(Keys.hmacShaKeyFor(key.getBytes()), SignatureAlgorithm.HS256)
-//                   .setExpiration(expiredTime)
-//                   .compact();
-//    }
-
-    private String createAuthToken(String key, String type, String header, String headerValue, Date expiredTime) {
+    private static String createJwtToken(String subject, String role, String type, Key key, Date now, Date expiry) {
         return Jwts.builder()
-                   .setSubject(type)
-                   .setHeaderParam(header, headerValue)
-                   .signWith(Keys.hmacShaKeyFor(key.getBytes()), SignatureAlgorithm.HS256)
-                   .setExpiration(expiredTime)
+                   .setSubject(subject)
+                   .claim(AUTHORITIES_KEY, role)
+                   .claim(TOKEN_TYPE, type)
+                   .signWith(key, SignatureAlgorithm.HS256)
+                   .setIssuedAt(now)
+                   .setExpiration(expiry)
                    .compact();
-    }
-
-    public boolean validate() {
-        return this.getTokenClaims() != null;
-    }
-
-    public Claims getTokenClaims() {
-        try {
-            return Jwts.parserBuilder()
-                       .setSigningKey(Keys.hmacShaKeyFor(this.secret.getBytes()))
-                       .build()
-                       .parseClaimsJws(this.value)
-                       .getBody();
-        } catch (SecurityException e) {
-            log.info("Invalid JWT signature.");
-        } catch (MalformedJwtException e) {
-            log.info("Invalid JWT token.");
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token.");
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT token.");
-        } catch (IllegalArgumentException e) {
-            log.info("JWT token compact of handler are invalid.");
-        }
-        return null;
-    }
-
-    public Claims getExpiredTokenClaims() {
-        try {
-            Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(this.secret.getBytes()))
-                .build()
-                .parseClaimsJws(this.value)
-                .getBody();
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token.");
-            return e.getClaims();
-        }
-        return null;
     }
 
     public TokenEntity toEntity() {
         return TokenEntity.builder()
-                          .secret(this.getSecret())
-                          .type(this.getType())
-                          .header(this.getHeader())
-                          .headerValue(this.getHeaderValue())
-                          .value(this.getValue())
-                          .expiredTime(this.getExpiredTime())
+                          .subject(this.subject)
+                          .role(this.role)
+                          .type(this.type)
+                          .token(this.token)
+                          .expiredTime(this.expiredTime)
                           .build();
     }
 }

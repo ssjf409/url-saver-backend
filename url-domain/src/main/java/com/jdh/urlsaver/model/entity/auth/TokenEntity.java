@@ -28,7 +28,7 @@ import static com.jdh.urlsaver.utils.LengthCondition.*;
 @SQLDelete(sql = "UPDATE token SET deleted = true WHERE token_id = ?")
 @Where(clause = "deleted = false")
 @Table
-@Entity(name = "token")
+@Entity(name = "auth_token")
 public class TokenEntity extends BaseEntity {
 
     @Column
@@ -36,26 +36,37 @@ public class TokenEntity extends BaseEntity {
     @Id
     private Long tokenId;
 
-    @Size(max = KEY_LEN)
+    @Size(max = TOKEN_SUBJECT_LEN)
     @Column
-    private String secret;
+    private String subject;
 
     @Size(max = TOKEN_TYPE_LEN)
     @Column
     private String type;
 
-    @Size(max = ATTRIBUTE_LEN)
+    @Size(max = ROLE_LEN)
     @Column
-    private String header;
+    private String role;
 
-    @Size(max = ATTRIBUTE_VALUE_LEN)
-    @Column
-    private String headerValue;
 
     @Size(max = TOKEN_LEN)
     @Column
-    private String value;
+    private String token;
 
     @Column
     private Date expiredTime;
+
+//    @Size(max = KEY_LEN)
+//    @Column
+//    private String secret;
+//
+//    @Size(max = ATTRIBUTE_LEN)
+//    @Column
+//    private String header;
+//
+//    @Size(max = ATTRIBUTE_VALUE_LEN)
+//    @Column
+//    private String headerValue;
+
+
 }

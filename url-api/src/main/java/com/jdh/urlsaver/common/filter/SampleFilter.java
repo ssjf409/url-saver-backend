@@ -1,8 +1,6 @@
 package com.jdh.urlsaver.common.filter;
 
 import com.jdh.urlsaver.api.application.AuthApplication;
-import com.jdh.urlsaver.model.entity.auth.TokenType;
-import com.jdh.urlsaver.utils.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -10,7 +8,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,16 +23,16 @@ public class SampleFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        Cookie accessTokenCookie = CookieUtil.getCookie(request, TokenType.ACCESS_TOKEN.getHeader()).orElse(null);
-        Cookie refreshTokenCookie = CookieUtil.getCookie(request, TokenType.REFRESH_TOKEN.getHeader()).orElse(null);
-
-        if (accessTokenCookie != null) {
-            authApplication.authenticate(accessTokenCookie.getValue());
-        } else {
-            if (refreshTokenCookie != null) {
-
-            }
-        }
+//        Cookie accessTokenCookie = CookieUtil.getCookie(request, TokenType.ACCESS_TOKEN.getHeader()).orElse(null);
+//        Cookie refreshTokenCookie = CookieUtil.getCookie(request, TokenType.REFRESH_TOKEN.getHeader()).orElse(null);
+//
+//        if (accessTokenCookie != null) {
+//            authApplication.authenticate(accessTokenCookie.getValue());
+//        } else {
+//            if (refreshTokenCookie != null) {
+//
+//            }
+//        }
 
 
         filterChain.doFilter(request, response);

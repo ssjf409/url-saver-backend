@@ -1,10 +1,11 @@
 package com.jdh.urlsaver.api.controller;
 
 import com.jdh.urlsaver.api.application.AuthApplication;
-import com.jdh.urlsaver.api.application.dto.LoginRequestDto;
-import com.jdh.urlsaver.api.application.dto.SignUpRequestDto;
-import com.jdh.urlsaver.api.application.vo.AuthVo;
+import com.jdh.urlsaver.api.application.dto.LoginRequest;
+import com.jdh.urlsaver.api.application.dto.LoginResponse;
+import com.jdh.urlsaver.api.application.dto.SignUpRequest;
 import com.jdh.urlsaver.configuration.properties.AppProperties;
+import com.jdh.urlsaver.model.entity.auth.TokenType;
 import com.jdh.urlsaver.utils.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,35 +28,31 @@ import static com.jdh.urlsaver.model.entity.auth.TokenType.*;
 @RequestMapping("/api/v1/auth")
 @RestController
 public class AuthController {
-
-    private final AuthApplication authApplication;
     private final AppProperties appProperties;
+    private final AuthApplication authApplication;
 
     @PostMapping("/sign-in")
-    public ResponseEntity<AuthVo> login(
+    public ResponseEntity<LoginResponse> login(
             HttpServletRequest request,
             HttpServletResponse response,
-            @Valid @RequestBody LoginRequestDto loginRequestDto) {
-        log.info("[Login]");
-        AuthVo auth = authApplication.signIn(loginRequestDto);
-        setNewCookies(request, response, auth);
-        return ResponseEntity.ok(auth);
+            @Valid @RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = authApplication.signIn(loginRequest);
+        setNewCookies(request, response, loginResponse);
+        return ResponseEntity.ok(loginResponse);
     }
 
-    private void setNewCookies(HttpServletRequest request, HttpServletResponse response, AuthVo auth) {
-        long accessTokenExpiry = appProperties.getAuth().getTokenExpiry();
-        long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
+    private void setNewCookies(HttpServletRequest request, HttpServletResponse response, LoginResponse loginResponse) {
         CookieUtil.deleteCookie(request, response, ACCESS_TOKEN.getHeader());
-        CookieUtil.addCookie(response, ACCESS_TOKEN.getHeader(), auth.getAccessToken(),
-                             (int) accessTokenExpiry / 60);
-        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN.getHeader());
-        CookieUtil.addCookie(response, REFRESH_TOKEN.getHeader(), auth.getRefreshToken(),
-                             (int) refreshTokenExpiry / 60);
+        CookieUtil.addCookie(response, ACCESS_TOKEN.getHeader(), loginResponse.getAccessToken(),
+                             appProperties.getAuth().getTokenExpirySec());
+        CookieUtil.deleteCookie(request, response, TokenType.REFRESH_TOKEN.getHeader());
+        CookieUtil.addCookie(response, TokenType.REFRESH_TOKEN.getHeader(), loginResponse.getRefreshToken(),
+                             appProperties.getAuth().getRefreshTokenExpirySec());
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Boolean> signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
-        authApplication.signUp(signUpRequestDto);
+    public ResponseEntity<Boolean> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        authApplication.signUp(signUpRequest);
         return ResponseEntity.ok(Boolean.TRUE);
     }
 

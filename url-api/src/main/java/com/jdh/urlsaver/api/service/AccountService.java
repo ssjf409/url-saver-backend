@@ -1,6 +1,6 @@
 package com.jdh.urlsaver.api.service;
 
-import com.jdh.urlsaver.api.application.dto.SignUpRequestDto;
+import com.jdh.urlsaver.api.application.dto.SignUpRequest;
 import com.jdh.urlsaver.api.repository.SignUpHistoryRepository;
 import com.jdh.urlsaver.api.repository.UserRepository;
 import com.jdh.urlsaver.api.service.dto.User;
@@ -14,47 +14,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
-
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class AuthService {
+public class AccountService {
 
     private final UserRepository userRepository;
     private final SignUpHistoryRepository signUpHistoryRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional(readOnly = true)
-    public User signIn(@NotNull String loginId, @NotNull String password) {
-        UserEntity userEntity = userRepository.findByLoginId(loginId);
-        if (userEntity == null) {
-            throw new UnauthorizedException("failed to find sign in, loginId: " + loginId);
-        } else if (!passwordEncoder.matches(password, userEntity.getHashedPassword())) {
-            throw new UnauthorizedException("failed to sign in, loginId: " + loginId);
-        }
-        return User.convert(userEntity);
-    }
-
     @Transactional
-    public User register(SignUpRequestDto signUpRequestDto) {
-        UserEntity existingUser = userRepository.findByLoginId(signUpRequestDto.getLoginId());
+    public User register(SignUpRequest signUpRequest) {
+        UserEntity existingUser = userRepository.findByLoginId(signUpRequest.getLoginId());
         Long userId = null;
         if (existingUser != null) {
             if (existingUser.isEmailVerified()) {
-                throw new UnauthorizedException("failed to sign up, loginId: " + signUpRequestDto.getLoginId());
+                throw new UnauthorizedException("failed to sign up, loginId: " + signUpRequest.getLoginId());
             } else {
                 userId = existingUser.getUserId();
             }
         }
-        String hashedPassword = passwordEncoder.encode(signUpRequestDto.getPassword());
+        String hashedPassword = passwordEncoder.encode(signUpRequest.getPassword());
         UserEntity userEntity = UserEntity.builder()
                                           .userId(userId)
-                                          .loginId(signUpRequestDto.getLoginId())
+                                          .loginId(signUpRequest.getLoginId())
                                           .hashedPassword(hashedPassword)
-                                          .email(signUpRequestDto.getEmail())
-                                          .familyName(signUpRequestDto.getFamilyName())
-                                          .givenName(signUpRequestDto.getGivenName())
+                                          .email(signUpRequest.getEmail())
+                                          .familyName(signUpRequest.getFamilyName())
+                                          .givenName(signUpRequest.getGivenName())
                                           .emailVerified(false)
                                           .providerType(ProviderType.LOCAL)
                                           .roleType(RoleType.USER)
@@ -74,5 +61,9 @@ public class AuthService {
         }
         existingUser.setEmailVerified(true);
         userRepository.save(existingUser);
+    }
+
+    public void validate(String tokenStr) {
+
     }
 }
