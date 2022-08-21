@@ -1,8 +1,8 @@
 package com.jdh.urlsaver.api.application;
 
-import com.jdh.urlsaver.api.application.dto.LoginRequest;
-import com.jdh.urlsaver.api.application.dto.LoginResponse;
-import com.jdh.urlsaver.api.application.dto.SignUpRequest;
+import com.jdh.urlsaver.api.controller.dto.LoginRequest;
+import com.jdh.urlsaver.api.controller.dto.LoginResponse;
+import com.jdh.urlsaver.api.controller.dto.SignUpRequest;
 import com.jdh.urlsaver.api.service.AccountService;
 import com.jdh.urlsaver.api.service.dto.AuthResult;
 import com.jdh.urlsaver.api.service.dto.User;
@@ -12,7 +12,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -35,7 +34,7 @@ public final class AuthApplication {
                         loginRequest.getPassword()
                 )
         );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         String role = ((UserPrincipal) authentication.getPrincipal()).getRoleType().getCode();

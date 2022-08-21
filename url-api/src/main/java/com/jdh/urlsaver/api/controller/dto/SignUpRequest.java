@@ -1,4 +1,4 @@
-package com.jdh.urlsaver.api.application.dto;
+package com.jdh.urlsaver.api.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,14 +1,13 @@
 package com.jdh.urlsaver.api.controller;
 
 import com.jdh.urlsaver.api.application.AuthApplication;
-import com.jdh.urlsaver.api.application.dto.LoginRequest;
-import com.jdh.urlsaver.api.application.dto.LoginResponse;
-import com.jdh.urlsaver.api.application.dto.SignUpRequest;
+import com.jdh.urlsaver.api.controller.dto.LoginRequest;
+import com.jdh.urlsaver.api.controller.dto.LoginResponse;
+import com.jdh.urlsaver.api.controller.dto.SignUpRequest;
 import com.jdh.urlsaver.configuration.properties.AppProperties;
 import com.jdh.urlsaver.model.entity.auth.TokenType;
 import com.jdh.urlsaver.utils.CookieUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +22,6 @@ import javax.validation.Valid;
 
 import static com.jdh.urlsaver.model.entity.auth.TokenType.*;
 
-@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 @RestController

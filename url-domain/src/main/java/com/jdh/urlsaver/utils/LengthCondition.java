@@ -15,4 +15,8 @@ public interface LengthCondition {
     int TOKEN_LEN = 500;
     int TOKEN_TYPE_LEN = 20;
     int RANDOM_STRING_LEN = 200;
+    int URL_LEN = 1000;
+    int CONTENT_LEN = 1000;
+    int DESCRIPTION_LEN = 500;
+    int NODE_TYPE_LEN = 50;
 }

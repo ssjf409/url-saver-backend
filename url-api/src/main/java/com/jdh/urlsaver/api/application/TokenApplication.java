@@ -30,11 +30,11 @@ public final class TokenApplication {
     }
 
     public Tuple2<Authentication, AuthResult> refreshAuthentication(String tokenStr) {
-        Authentication authentication = tokenService.getAuthentication(tokenStr);
+        Authentication authentication = getAuthentication(tokenStr);
         User user = (User) authentication.getPrincipal();
-        AuthResult authToken =
-                tokenService.createAuthToken(user.getUsername(),
-                                             user.getAuthorities().stream().findFirst().get().getAuthority());
+        AuthResult authToken = tokenService.createAuthToken(user.getUsername(),
+                                                            user.getAuthorities().stream().findFirst()
+                                                                .get().getAuthority());
         return Tuple.of(authentication, authToken);
     }
 

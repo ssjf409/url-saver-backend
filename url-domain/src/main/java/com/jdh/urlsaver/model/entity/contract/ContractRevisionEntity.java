@@ -1,6 +1,7 @@
 package com.jdh.urlsaver.model.entity.contract;
 
 import com.jdh.urlsaver.model.entity.audit.BaseEntity;
+import com.jdh.urlsaver.model.entity.node.NodeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

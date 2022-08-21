@@ -4,6 +4,7 @@ import com.jdh.urlsaver.model.entity.user.ProviderType;
 import com.jdh.urlsaver.model.entity.user.RoleType;
 import com.jdh.urlsaver.model.entity.user.UserEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {

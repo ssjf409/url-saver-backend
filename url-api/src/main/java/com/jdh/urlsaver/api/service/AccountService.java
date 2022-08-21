@@ -1,6 +1,6 @@
 package com.jdh.urlsaver.api.service;
 
-import com.jdh.urlsaver.api.application.dto.SignUpRequest;
+import com.jdh.urlsaver.api.controller.dto.SignUpRequest;
 import com.jdh.urlsaver.api.repository.SignUpHistoryRepository;
 import com.jdh.urlsaver.api.repository.UserRepository;
 import com.jdh.urlsaver.api.service.dto.User;

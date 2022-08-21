@@ -44,18 +44,19 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } else if (tokenApplication.validate(refreshTokenStr)) {
             Tuple2<Authentication, AuthResult> refreshed = tokenApplication.refreshAuthentication(refreshTokenStr);
+            Authentication authentication = refreshed._1;
+            AuthResult authResult = refreshed._2;
 
             CookieUtil.deleteCookie(request, response, ACCESS_TOKEN.getHeader());
-            CookieUtil.addCookie(response, ACCESS_TOKEN.getHeader(), refreshed._2.getAccessToken().getToken(),
+            CookieUtil.addCookie(response, ACCESS_TOKEN.getHeader(), authResult.getAccessToken().getToken(),
                                  appProperties.getAuth().getTokenExpirySec());
             CookieUtil.deleteCookie(request, response, TokenType.REFRESH_TOKEN.getHeader());
             CookieUtil.addCookie(response, TokenType.REFRESH_TOKEN.getHeader(),
-                                 refreshed._2.getRefreshToken().getToken(),
+                                 authResult.getRefreshToken().getToken(),
                                  appProperties.getAuth().getRefreshTokenExpirySec());
 
-            SecurityContextHolder.getContext().setAuthentication(refreshed._1);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
         filterChain.doFilter(request, response);
     }
 }
