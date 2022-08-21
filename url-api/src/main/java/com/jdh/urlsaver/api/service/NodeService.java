@@ -1,7 +1,7 @@
 package com.jdh.urlsaver.api.service;
 
 import com.jdh.urlsaver.api.repository.NodeRepository;
-import com.jdh.urlsaver.common.dto.PageContents;
+import com.jdh.urlsaver.model.entity.PageContents;
 import com.jdh.urlsaver.model.entity.node.Node;
 import com.jdh.urlsaver.model.entity.node.NodeEntity;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +21,7 @@ public class NodeService {
     public PageContents<Node> fetch(Long parentNodeId, Integer pageNumber, Integer pageSize) {
         Page<NodeEntity> nodePages = nodeRepository.findByParentNodeId(
                 parentNodeId, PageRequest.of(pageNumber, pageSize, Sort.by("createdAt").descending()));
-
-        PageContents<Node> pages = new PageContents<>();
-        pages.setContent(Node.of(nodePages.getContent()));
-        pages.setTotalElements(nodePages.getTotalElements());
-        pages.setTotalPages(nodePages.getTotalPages());
-        return pages;
+        return Node.of(nodePages);
     }
 
     @Transactional

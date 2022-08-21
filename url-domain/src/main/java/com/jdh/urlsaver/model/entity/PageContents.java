@@ -1,4 +1,4 @@
-package com.jdh.urlsaver.common.dto;
+package com.jdh.urlsaver.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;
