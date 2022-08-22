@@ -1,7 +1,7 @@
 package com.jdh.urlsaver.api.controller.dto;
 
-import com.jdh.urlsaver.model.entity.node.Node;
-import com.jdh.urlsaver.model.entity.node.NodeType;
+import com.jdh.urlsaver.domain.model.entity.node.Node;
+import com.jdh.urlsaver.domain.model.entity.node.NodeType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

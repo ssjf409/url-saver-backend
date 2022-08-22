@@ -1,8 +1,8 @@
 package com.jdh.urlsaver.configuration.security;
 
-import com.jdh.urlsaver.model.entity.user.ProviderType;
-import com.jdh.urlsaver.model.entity.user.RoleType;
-import com.jdh.urlsaver.model.entity.user.UserEntity;
+import com.jdh.urlsaver.domain.model.entity.user.ProviderType;
+import com.jdh.urlsaver.domain.model.entity.user.RoleType;
+import com.jdh.urlsaver.domain.model.entity.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

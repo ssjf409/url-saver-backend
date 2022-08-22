@@ -1,7 +1,7 @@
 package com.jdh.urlsaver.api.service;
 
 import com.jdh.urlsaver.api.service.dto.MailDto;
-import com.jdh.urlsaver.common.exception.EmailSendException;
+import com.jdh.urlsaver.domain.common.exception.EmailSendException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

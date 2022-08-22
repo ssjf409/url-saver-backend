@@ -3,7 +3,7 @@ package com.jdh.urlsaver.common.filter;
 import com.jdh.urlsaver.api.application.TokenApplication;
 import com.jdh.urlsaver.api.service.dto.AuthResult;
 import com.jdh.urlsaver.configuration.properties.AppProperties;
-import com.jdh.urlsaver.model.entity.auth.TokenType;
+import com.jdh.urlsaver.domain.model.entity.auth.TokenType;
 import com.jdh.urlsaver.utils.CookieUtil;
 import io.vavr.Tuple2;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.jdh.urlsaver.model.entity.auth.TokenType.*;
+import static com.jdh.urlsaver.domain.model.entity.auth.TokenType.*;
 
 @Slf4j
 @RequiredArgsConstructor

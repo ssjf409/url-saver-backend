@@ -3,12 +3,10 @@ package com.jdh.urlsaver.api.application;
 import com.jdh.urlsaver.api.controller.dto.LoginRequest;
 import com.jdh.urlsaver.api.controller.dto.LoginResponse;
 import com.jdh.urlsaver.api.controller.dto.SignUpRequest;
-import com.jdh.urlsaver.api.service.AccountService;
 import com.jdh.urlsaver.api.service.dto.AuthResult;
-import com.jdh.urlsaver.api.service.dto.User;
 import com.jdh.urlsaver.configuration.security.UserPrincipal;
+import com.jdh.urlsaver.domain.model.entity.user.User;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,11 +18,10 @@ import javax.validation.constraints.NotNull;
 @Component
 public final class AuthApplication {
 
-    private final AccountService accountService;
+    private final AccountApplication accountApplication;
     private final AuthenticationManager authenticationManager;
     private final TokenApplication tokenApplication;
     private final HistoryApplication historyApplication;
-    private final NoticeApplication noticeApplication;
 
     public LoginResponse signIn(@NotNull LoginRequest loginRequest) {
         // 1. check user
@@ -56,18 +53,12 @@ public final class AuthApplication {
     }
 
     public User signUp(SignUpRequest signUpRequest) {
-        User user = accountService.register(signUpRequest);
-
-        // after sign up
-        String emailCode = RandomStringUtils.randomAlphanumeric(20);
-        historyApplication.leaveSignUpEvent(user, emailCode);
-        noticeApplication.sendVerifyEMail(user.getEmail(), String.valueOf(user.getUserId()), emailCode);
-        return user;
+        return accountApplication.register(signUpRequest);
     }
 
     public void verifyEmail(Long userId, String code) {
         historyApplication.validateEmail(String.valueOf(userId), code);
         // after success validation
-        accountService.successEmailVerification(userId);
+        accountApplication.successEmailVerification(userId);
     }
 }

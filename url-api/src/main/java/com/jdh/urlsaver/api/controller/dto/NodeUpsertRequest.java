@@ -1,8 +1,8 @@
 package com.jdh.urlsaver.api.controller.dto;
 
 import com.jdh.urlsaver.common.ValidEnum;
-import com.jdh.urlsaver.model.entity.node.NodeEntity;
-import com.jdh.urlsaver.model.entity.node.NodeType;
+import com.jdh.urlsaver.domain.model.entity.node.NodeEntity;
+import com.jdh.urlsaver.domain.model.entity.node.NodeType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +18,8 @@ public class NodeUpsertRequest {
 
     @NotNull
     private Long parentNodeId;
+
+    private Long categoryId;
 
     @ValidEnum(enumClass = NodeType.class)
     private String type;

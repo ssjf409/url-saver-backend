@@ -5,7 +5,7 @@ import com.jdh.urlsaver.api.controller.dto.NodeDeleteRequest;
 import com.jdh.urlsaver.api.controller.dto.NodeFetchResponse;
 import com.jdh.urlsaver.api.controller.dto.NodeUpsertRequest;
 import com.jdh.urlsaver.configuration.security.AuthUtils;
-import com.jdh.urlsaver.model.entity.node.Node;
+import com.jdh.urlsaver.domain.model.entity.node.Node;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -56,10 +56,10 @@ public class NodeController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Boolean> delete(@Valid @RequestBody NodeDeleteRequest request) {
-//        Long userId = AuthUtils.getUserId(authentication);
-//        request.setUserId(userId);
-        nodeApplication.delete(request);
+    public ResponseEntity<Boolean> delete(Authentication authentication,
+                                          @Valid @RequestBody NodeDeleteRequest request) {
+        Long userId = AuthUtils.getUserId(authentication);
+        nodeApplication.delete(userId, request);
         return ResponseEntity.ok(Boolean.TRUE);
     }
 }

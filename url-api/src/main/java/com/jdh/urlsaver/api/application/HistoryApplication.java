@@ -2,9 +2,9 @@ package com.jdh.urlsaver.api.application;
 
 import com.jdh.urlsaver.api.repository.SignInHistoryRepository;
 import com.jdh.urlsaver.api.repository.SignUpHistoryRepository;
-import com.jdh.urlsaver.api.service.dto.User;
-import com.jdh.urlsaver.common.exception.InvalidInputException;
-import com.jdh.urlsaver.model.entity.auth.SignUpHistoryEntity;
+import com.jdh.urlsaver.domain.common.exception.InvalidInputException;
+import com.jdh.urlsaver.domain.model.entity.auth.SignUpHistoryEntity;
+import com.jdh.urlsaver.domain.model.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

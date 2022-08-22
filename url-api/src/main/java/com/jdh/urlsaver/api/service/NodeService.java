@@ -1,9 +1,9 @@
 package com.jdh.urlsaver.api.service;
 
 import com.jdh.urlsaver.api.repository.NodeRepository;
-import com.jdh.urlsaver.model.entity.PageContents;
-import com.jdh.urlsaver.model.entity.node.Node;
-import com.jdh.urlsaver.model.entity.node.NodeEntity;
+import com.jdh.urlsaver.domain.model.entity.PageContents;
+import com.jdh.urlsaver.domain.model.entity.node.Node;
+import com.jdh.urlsaver.domain.model.entity.node.NodeEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

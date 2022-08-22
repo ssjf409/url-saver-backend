@@ -3,12 +3,12 @@ package com.jdh.urlsaver.api.service;
 import com.jdh.urlsaver.api.controller.dto.SignUpRequest;
 import com.jdh.urlsaver.api.repository.SignUpHistoryRepository;
 import com.jdh.urlsaver.api.repository.UserRepository;
-import com.jdh.urlsaver.api.service.dto.User;
-import com.jdh.urlsaver.common.exception.InvalidInputException;
-import com.jdh.urlsaver.common.exception.UnauthorizedException;
-import com.jdh.urlsaver.model.entity.user.ProviderType;
-import com.jdh.urlsaver.model.entity.user.RoleType;
-import com.jdh.urlsaver.model.entity.user.UserEntity;
+import com.jdh.urlsaver.domain.common.exception.InvalidInputException;
+import com.jdh.urlsaver.domain.common.exception.UnauthorizedException;
+import com.jdh.urlsaver.domain.model.entity.user.ProviderType;
+import com.jdh.urlsaver.domain.model.entity.user.RoleType;
+import com.jdh.urlsaver.domain.model.entity.user.User;
+import com.jdh.urlsaver.domain.model.entity.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class AccountService {
 
     @Transactional
     public User register(SignUpRequest signUpRequest) {
-        UserEntity existingUser = userRepository.findByLoginId(signUpRequest.getLoginId());
+        UserEntity existingUser = userRepository.findByLoginId(signUpRequest.getLoginId()).orElse(null);
         Long userId = null;
         if (existingUser != null) {
             if (existingUser.isEmailVerified()) {
@@ -50,20 +50,20 @@ public class AccountService {
                                           .withdrawn(false)
                                           .build();
         UserEntity savedUser = userRepository.save(userEntity);
-        return User.convert(savedUser);
+        return User.of(savedUser);
     }
 
     @Transactional
     public void successEmailVerification(Long userId) {
-        UserEntity existingUser = userRepository.findByUserId(userId);
-        if (existingUser == null) {
-            throw new InvalidInputException(String.format("failed to verify email, userId : %s", userId));
-        }
+        UserEntity existingUser = userRepository.findByUserId(userId).orElseThrow(
+                () -> new InvalidInputException(String.format("failed to verify email, userId : %s", userId)));
         existingUser.setEmailVerified(true);
         userRepository.save(existingUser);
     }
 
-    public void validate(String tokenStr) {
-
+    @Transactional(readOnly = true)
+    public User findUser(Long userId) {
+        return User.of(userRepository.findByUserId(userId).orElseThrow(
+                () -> new InvalidInputException(String.format("failed to find user, userIdL: %s", userId))));
     }
 }
