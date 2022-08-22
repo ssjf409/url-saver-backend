@@ -23,10 +23,14 @@ public class CategoryService {
 
     @Transactional
     public Category createDefault(Long userId) {
-        CategoryEntity entity = CategoryEntity.builder()
-                                              .userId(userId)
-                                              .type(CategoryType.DEFAULT)
-                                              .build();
-        return Category.of(categoryRepository.save(entity));
+        CategoryEntity savedCategory = categoryRepository.findByUserIdAndType(userId, CategoryType.DEFAULT);
+        if (savedCategory == null) {
+            savedCategory = CategoryEntity.builder()
+                                          .userId(userId)
+                                          .type(CategoryType.DEFAULT)
+                                          .build();
+            categoryRepository.save(savedCategory);
+        }
+        return Category.of(savedCategory);
     }
 }

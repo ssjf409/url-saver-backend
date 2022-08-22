@@ -6,7 +6,7 @@ import com.jdh.urlsaver.api.application.NodeApplication;
 import com.jdh.urlsaver.api.application.NoticeApplication;
 import com.jdh.urlsaver.domain.model.entity.category.Category;
 import com.jdh.urlsaver.domain.model.entity.user.User;
-import com.jdh.urlsaver.domain.service.event.SignUpEvent;
+import com.jdh.urlsaver.domain.service.event.NewUserEvent;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.event.EventListener;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class CustomSpringEventListener {
+public class NewUserEventListener {
 
     private final CategoryApplication categoryApplication;
     private final NodeApplication nodeApplication;
@@ -25,7 +25,7 @@ public class CustomSpringEventListener {
     //    @TransactionalEventListener
     @Async
     @EventListener
-    public void onEvent(SignUpEvent event) {
+    public void onEvent(NewUserEvent event) {
         User user = event.getUser();
 
         Category category = categoryApplication.createDefaultCategory(user.getUserId());

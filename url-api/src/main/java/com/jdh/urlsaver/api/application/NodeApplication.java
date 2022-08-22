@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class NodeApplication {
-    private static final String DEFAULT = "Default";
+    private static final String DEFAULT_NAME = "default";
     private final AccountApplication accountApplication;
     private final CategoryApplication categoryApplication;
     private final NodeService nodeService;
@@ -47,11 +47,11 @@ public class NodeApplication {
     public void createDefaultNode(Long userId, Long categoryId) {
         accountApplication.findUser(userId);
         categoryApplication.findCategory(categoryId);
-        nodeService.create(NodeEntity.builder()
-                                     .userId(userId)
-                                     .name(DEFAULT)
-                                     .categoryId(categoryId)
-                                     .type(NodeType.HEAD)
-                                     .build());
+        nodeService.createHeadNode(NodeEntity.builder()
+                                             .userId(userId)
+                                             .name(DEFAULT_NAME)
+                                             .categoryId(categoryId)
+                                             .type(NodeType.HEAD)
+                                             .build());
     }
 }

@@ -50,8 +50,7 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<Boolean> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        authApplication.signUp(signUpRequest);
-        return ResponseEntity.ok(Boolean.TRUE);
+        return ResponseEntity.ok(authApplication.signUp(signUpRequest));
     }
 
     @GetMapping("/verify/email")

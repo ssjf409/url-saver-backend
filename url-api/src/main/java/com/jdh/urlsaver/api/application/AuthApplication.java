@@ -5,7 +5,6 @@ import com.jdh.urlsaver.api.controller.dto.LoginResponse;
 import com.jdh.urlsaver.api.controller.dto.SignUpRequest;
 import com.jdh.urlsaver.api.service.dto.AuthResult;
 import com.jdh.urlsaver.configuration.security.UserPrincipal;
-import com.jdh.urlsaver.domain.model.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,8 +51,9 @@ public final class AuthApplication {
 
     }
 
-    public User signUp(SignUpRequest signUpRequest) {
-        return accountApplication.register(signUpRequest);
+    public Boolean signUp(SignUpRequest signUpRequest) {
+        accountApplication.register(signUpRequest);
+        return Boolean.TRUE;
     }
 
     public void verifyEmail(Long userId, String code) {

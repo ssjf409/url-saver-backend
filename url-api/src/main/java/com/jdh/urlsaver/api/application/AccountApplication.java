@@ -4,7 +4,7 @@ import com.jdh.urlsaver.api.controller.dto.SignUpRequest;
 import com.jdh.urlsaver.api.service.AccountService;
 import com.jdh.urlsaver.domain.model.entity.user.User;
 import com.jdh.urlsaver.domain.service.event.EventService;
-import com.jdh.urlsaver.domain.service.event.SignUpEvent;
+import com.jdh.urlsaver.domain.service.event.NewUserEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public class AccountApplication {
 
     public User register(SignUpRequest signUpRequest) {
         User user = accountService.register(signUpRequest);
-        eventService.publish(new SignUpEvent(this, user));
+        eventService.publish(new NewUserEvent(this, user));
         return user;
     }
 

@@ -1,7 +1,6 @@
 package com.jdh.urlsaver.api.service;
 
 import com.jdh.urlsaver.api.controller.dto.SignUpRequest;
-import com.jdh.urlsaver.api.repository.SignUpHistoryRepository;
 import com.jdh.urlsaver.api.repository.UserRepository;
 import com.jdh.urlsaver.domain.common.exception.InvalidInputException;
 import com.jdh.urlsaver.domain.common.exception.UnauthorizedException;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService {
 
     private final UserRepository userRepository;
-    private final SignUpHistoryRepository signUpHistoryRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional

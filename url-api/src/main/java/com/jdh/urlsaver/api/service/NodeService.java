@@ -1,6 +1,7 @@
 package com.jdh.urlsaver.api.service;
 
 import com.jdh.urlsaver.api.repository.NodeRepository;
+import com.jdh.urlsaver.domain.common.exception.InvalidInputException;
 import com.jdh.urlsaver.domain.model.entity.PageContents;
 import com.jdh.urlsaver.domain.model.entity.node.Node;
 import com.jdh.urlsaver.domain.model.entity.node.NodeEntity;
@@ -30,9 +31,18 @@ public class NodeService {
     }
 
     @Transactional
+    public void createHeadNode(NodeEntity entity) {
+        NodeEntity savedNode = nodeRepository.findByUserIdAndType(entity.getUserId(), entity.getType());
+        if (savedNode == null) {
+            savedNode = entity;
+            nodeRepository.save(savedNode);
+        }
+    }
+
+    @Transactional
     public Node update(NodeEntity entity) {
-        NodeEntity existing = nodeRepository.findById(entity.getNodeId())
-                                            .orElseThrow(() -> new RuntimeException("unknown"));
+        NodeEntity existing = nodeRepository.findById(entity.getNodeId()).orElseThrow(
+                () -> new InvalidInputException(String.format("failed to find node, nodeId: %s", entity.getNodeId())));
         entity.setUserId(existing.getUserId());
         return Node.of(nodeRepository.save(entity));
     }
